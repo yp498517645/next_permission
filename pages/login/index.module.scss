@@ -1,0 +1,20 @@
+.container {
+  background-image: url("/images/background.png");
+  background-size: 100%;
+  height: 100vh;
+  width: 100vw;
+  .form {
+    padding-top: 5rem;
+    position: absolute;
+    background-color: #fcedb6;
+    opacity: 0.8;
+    top: 10rem;
+    width: 35rem;
+    height: 20rem;
+    margin-left: 2rem;
+    border-radius: 0.7rem;
+  }
+  .inputPwd {
+    margin-left: 1rem;
+  }
+}
