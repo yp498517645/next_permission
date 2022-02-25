@@ -13,6 +13,7 @@ export interface registerType {
 
 const Login: NextPage = () => {
   const router = useRouter();
+
   //提交表单且数据验证成功后回调事件;
   const onFinish = (values: registerType) => {
     const res: Promise<any> = user.usrRegister(
@@ -20,14 +21,14 @@ const Login: NextPage = () => {
       values.password,
       values.isAdmin
     );
-      res.then((result) => { 
-        console.log('wwww',result)
-        if (result.data.message === "用户注册成功") {
-          router.push("/login")
-        }else{
-          alert("注册失败")
-        }
-       })
+    res.then((result) => {
+      console.log("wwww", result);
+      if (result.data.message === "用户注册成功") {
+        router.push("/login");
+      } else {
+        alert("注册失败");
+      }
+    });
   };
   //提交表单且数据验证失败后回调事件
   const onFinishFailed = (errorInfo: any) => {
@@ -91,7 +92,7 @@ const Login: NextPage = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{marginLeft:"3rem"}}>
             注册
           </Button>
         </Form.Item>

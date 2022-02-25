@@ -5,8 +5,6 @@ import { User } from "../api/user";
 import { useRouter } from "next/router";
 const user = new User();
 
-
-
 interface loginType {
   username: string;
   password: string;
@@ -14,17 +12,21 @@ interface loginType {
 
 const Login: NextPage = () => {
   const router = useRouter();
-  const onFinish = (values: loginType) => {
-    const res = user.usrLogin(values.username, values.password);
-    res.then((result) => {
-     if (result!.data.message === '用户注册成功') {
-       router.push("/home")
-     }else{
-       console.log("first")
-       alert("用户登陆失败")
-     }
-    });
+
+  const onRegister = () => {
+    router.push("/register");
   };
+  async function onFinish(values: loginType) {
+    try {
+      const res = await user.usrLogin(values.username, values.password);
+      if (res?.data.message === "用户登陆成功") {
+        localStorage.setItem(values.username, res.data.result.token);
+        router.push("/home");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -75,8 +77,9 @@ const Login: NextPage = () => {
           </Button>
           <Button
             type="primary"
-            htmlType="submit"
+            htmlType="button"
             style={{ marginLeft: "1rem" }}
+            onClick={onRegister}
           >
             注册
           </Button>
