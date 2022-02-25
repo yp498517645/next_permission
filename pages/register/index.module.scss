@@ -19,6 +19,14 @@
       margin-left: 1rem;
     }
   }
+  .repwd{
+    margin-left:0.6rem
+  }
+  .repassword{
+    :global(.ant-form-item-explain-error) {
+      margin-left: 0.6rem;
+    }
+  }
   .inputPw11d {
     margin-left: 1rem;
   }

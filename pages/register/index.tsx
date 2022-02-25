@@ -1,31 +1,35 @@
 import styles from "./index.module.scss";
 import type { NextPage } from "next";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, Alert } from "antd";
 import { User } from "../api/user";
 import { useRouter } from "next/router";
 const user = new User();
 
-
-
-interface loginType {
+export interface registerType {
   username: string;
   password: string;
+  isAdmin: boolean;
 }
 
 const Login: NextPage = () => {
   const router = useRouter();
-  const onFinish = (values: loginType) => {
-    const res = user.usrLogin(values.username, values.password);
-    res.then((result) => {
-     if (result!.data.message === '用户注册成功') {
-       router.push("/home")
-     }else{
-       console.log("first")
-       alert("用户登陆失败")
-     }
-    });
+  //提交表单且数据验证成功后回调事件;
+  const onFinish = (values: registerType) => {
+    const res: Promise<any> = user.usrRegister(
+      values.username,
+      values.password,
+      values.isAdmin
+    );
+      res.then((result) => { 
+        console.log('wwww',result)
+        if (result.data.message === "用户注册成功") {
+          router.push("/login")
+        }else{
+          alert("注册失败")
+        }
+       })
   };
-
+  //提交表单且数据验证失败后回调事件
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
@@ -44,6 +48,7 @@ const Login: NextPage = () => {
         autoComplete="off"
       >
         <Form.Item
+          labelCol={{ offset: 3 }}
           label="用户名"
           name="username"
           rules={[{ required: true, message: "请输入你的用户名!" }]}
@@ -62,22 +67,31 @@ const Login: NextPage = () => {
         </Form.Item>
 
         <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 4, span: 16 }}
+          className={styles.repassword}
+          labelCol={{ offset: 2 }}
+          label="确认密码"
+          name="repassword"
+          rules={[
+            {
+              required: true,
+              message: "请确认你的密码是否一致！",
+            },
+            ({ getFieldValue }) => ({
+              //validator 自定义校验 (rule, value) => Promise
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error("两次密码输入不一致!"));
+              },
+            }),
+          ]}
         >
-          <Checkbox>记住我</Checkbox>
+          <Input.Password className={styles["repwd"]} />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            登陆
-          </Button>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ marginLeft: "1rem" }}
-          >
             注册
           </Button>
         </Form.Item>
