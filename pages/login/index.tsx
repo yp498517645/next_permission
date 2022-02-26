@@ -22,6 +22,8 @@ const Login: NextPage = () => {
       if (res?.data.message === "用户登陆成功") {
         localStorage.setItem(values.username, res.data.result.token);
         router.push("/home");
+      } else {
+        alert("账号或密码不对");
       }
     } catch (error) {
       console.log(error);

@@ -1,0 +1,28 @@
+.header {
+  background-color: #f8d982 !important;
+  display: flex;
+  border: 1px solid #f8d981;
+  .MenuOutlined {
+    display: flex;
+    font-size: 2rem;
+    line-height: 100%;
+    vertical-align: middle;
+    align-items: center;
+  }
+  .h1 {
+    margin-left: 1rem;
+    color: white;
+  }
+  .font {
+    font-size: 2rem;
+    margin: auto 2rem;
+  }
+  .div {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    .avatar {
+      margin: auto 1rem auto auto;
+    }
+  }
+}
