@@ -16,13 +16,18 @@
   .font {
     font-size: 2rem;
     margin: auto 2rem;
+    cursor: pointer;
   }
   .div {
     flex: 1;
     display: flex;
     justify-content: flex-end;
-    .avatar {
+    .button {
       margin: auto 1rem auto auto;
+      border-color: black;
+        :global(.anticon){
+          color: black;
+        }
     }
   }
 }
