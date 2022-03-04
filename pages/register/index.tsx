@@ -18,11 +18,10 @@ const Login: NextPage = () => {
   const onFinish = (values: registerType) => {
     const res: Promise<any> = user.usrRegister(
       values.username,
-      values.password,
-      values.isAdmin
+      values.password
     );
+    console.log(res)
     res.then((result) => {
-      console.log("wwww", result);
       if (result.data.message === "用户注册成功") {
         router.push("/login");
       } else {

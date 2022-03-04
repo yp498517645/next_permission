@@ -5,11 +5,6 @@ import Head from "../../components/Head";
 import { Layout, Menu } from "antd";
 
 
-
-
-const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
-
 export default function Home() {
   return (
     <Layout>

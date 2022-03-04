@@ -1,5 +1,4 @@
 import axios from "axios";
-import { registerType } from "../register/index";
 axios.defaults.baseURL = "http://localhost:3000";
 
 export class User {
@@ -7,16 +6,15 @@ export class User {
    * 这是注册
    * @param username
    * @param password
-   * @param isAdmin
    * @returns
    */
-  async usrRegister(username: string, password: string, isAdmin: boolean) {
+  async usrRegister(username: string, password: string) {
     try {
       const res = await axios.post("/users/register", {
         username,
         password,
-        isAdmin: false,
       });
+      console.log("res", res);
       return res;
     } catch (error) {
       console.log(error);
@@ -33,17 +31,23 @@ export class User {
     } catch (error) {
       console.log(error);
     }
-  } 
-  
-
+  }
 
   async findAllUsers() {
     try {
       const res = await axios.get("/users/findAllUser");
-      return res
+      return res;
     } catch (error) {
-      console.log(error)
+      throw new Error(error as string);
     }
-    
+  }
+
+  async deleteOneUser(username: string) {
+    try {
+      const res = await axios.post("/users/delete", { username });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

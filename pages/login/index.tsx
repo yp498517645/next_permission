@@ -19,6 +19,7 @@ const Login: NextPage = () => {
   async function onFinish(values: loginType) {
     try {
       const res = await user.usrLogin(values.username, values.password);
+      console.log(res);
       if (res?.data.message === "用户登陆成功") {
         localStorage.setItem(values.username, res.data.result.token);
         router.push("/home");
