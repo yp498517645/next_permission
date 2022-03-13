@@ -12,6 +12,7 @@ interface loginType {
 
 const Login: NextPage = () => {
   const router = useRouter();
+  
 
   const onRegister = () => {
     router.push("/register");
@@ -19,11 +20,20 @@ const Login: NextPage = () => {
   async function onFinish(values: loginType) {
     try {
       const res = await user.usrLogin(values.username, values.password);
-      console.log(res);
-      if (res?.data.message === "用户登陆成功") {
+      if (res?.data.message === "用户登陆成功" && values.username !== "admin") {
+        window.location.href = `http://localhost:3008?${values.username}`;
+      } else if (
+        res?.data.message === "用户登陆成功" &&
+        values.username === "admin"
+      ) {
+        router.basePath = "http://localhost:8080";
         localStorage.setItem(values.username, res.data.result.token);
-        router.push("/home");
+        router.push({
+          pathname: "/home",
+          query: { username: values.username, token: res.data.result.token },
+        });
       } else {
+        console.log(res)
         alert("账号或密码不对");
       }
     } catch (error) {

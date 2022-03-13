@@ -22,14 +22,26 @@ export class User {
   }
 
   async usrLogin(username: string, password: string) {
-    try {
-      const res = await axios.post("/users/login", {
-        username,
-        password,
-      });
-      return res;
-    } catch (error) {
-      console.log(error);
+    if (username !== "admin") {
+      try {
+        const res = await axios.post("/users/login", {
+          username,
+          password,
+        });
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const res = await axios.post("/users/adminlogin", {
+          username,
+          password,
+        });
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 

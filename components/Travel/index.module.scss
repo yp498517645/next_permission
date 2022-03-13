@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  .middle-container {
+    padding:30px;
+    height:100vh;
+    .site-card-border-less-wrapper {
+      padding: 30px;
+      background: #ececec;
+    }
+  }
+}
