@@ -1,12 +1,14 @@
 import {
   Breadcrumb,
   Card,
+  Divider,
   Layout,
   Menu,
   message,
   Popconfirm,
   Space,
   Switch,
+  Image,
   Table,
   Tag,
 } from "antd";
@@ -15,11 +17,15 @@ import Side from "../Side";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.scss";
 import Column from "antd/lib/table/Column";
-import { User } from "../../pages/api/user";
-
+import { Info } from "../../pages/api/info";
+interface getData {
+  id: number;
+  title: string;
+  price: string;
+  url: string;
+}
 export default function Travel() {
-  const [data, setdata] = useState([]);
-  const [flag, setflag] = useState(false);
+  const [data, setdata] = useState<getData[]>([]);
   const tableWrapperRef = useRef(null);
   let height: number;
   if (tableWrapperRef.current) {
@@ -29,13 +35,33 @@ export default function Travel() {
   }
 
   const [scrollY, setscrollY] = useState(height as number);
+  interface InfoType {
+    id: number;
+    title: string;
+    price: string;
+    touristRoutePictures: [{ url: string }];
+  }
+
+  const formatData = (arr: [InfoType]): getData[] => {
+    return arr.map((item) => {
+      let url = item.touristRoutePictures[0].url;
+      return {
+        id: item.id,
+        title: item.title,
+        price: item.price,
+        url: url,
+      };
+    });
+  };
 
   useEffect(() => {
     let isUnmount = false;
     const fetch = async () => {
-      const reuslt = await new User().findAllUsers();
+      const result = await new Info().findAllInfo();
+      let data = result?.data.result.data;
+
       if (!isUnmount) {
-        setdata(reuslt?.data.data);
+        setdata(formatData(data));
       }
     };
     fetch();
@@ -60,23 +86,6 @@ export default function Travel() {
       };
     }
   }, [height]);
-  //删除确认
-  const confirm = async (record: any) => {
-    await new User().deleteOneUser(record.username);
-    const result = await new User().findAllUsers();
-    setdata(result.data.data);
-    message.success("delete on yes");
-  };
-
-  //删除取消
-  const cancel = (e: any) => {
-    message.error("delete on no");
-  };
-
-  //开关
-  function onChange(checked: any) {
-    console.log(`switch to ${checked}`);
-  }
 
   return (
     <>
@@ -91,24 +100,14 @@ export default function Travel() {
                 scroll={{ y: scrollY }}
                 rowKey="_id"
               >
-                <Column title="用户名" dataIndex="username" />
-                <Column title="密码" dataIndex="password" />
-                <Column title="Address" dataIndex="address" />
+                <Column title="标题" dataIndex="title" />
+                <Column title="价格" dataIndex="price" />
                 <Column
-                  title="Action"
-                  render={(text, record: any) => (
-                    <Popconfirm
-                      title="Are you sure to delete this admin?"
-                      onConfirm={() => {
-                        confirm(record);
-                      }}
-                      onCancel={cancel}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <a href="#">Delete</a>
-                    </Popconfirm>
-                  )}
+                  title="地址"
+                  dataIndex="url"
+                  render={(text: string, record: any) => {
+                    return <Image src={text} />;
+                  }}
                 />
               </Table>
             </Card>

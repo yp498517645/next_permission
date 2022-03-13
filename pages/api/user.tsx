@@ -14,7 +14,6 @@ export class User {
         username,
         password,
       });
-      console.log("res", res);
       return res;
     } catch (error) {
       console.log(error);
